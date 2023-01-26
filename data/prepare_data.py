@@ -29,6 +29,16 @@ def boston_loader(path):
     data = pd.read_csv(join(path, 'boston.csv'), index_col=0)
     return np.array(data)
 
+def acs_loader(path):
+    # read ACS dataset
+    # randomly select 10000 samples from the dataset for training and testing
+    raw_data = pd.read_csv('../../MissingData_DL/data/house.csv')
+    raw_data = raw_data.values.astype(np.float32)
+    total_index = np.random.permutation(raw_data.shape[0])
+    sample_index = total_index[:10000]
+    data = raw_data[sample_index,:]
+    return np.array(data)
+
 
 def mushroom_loader(path):
     # read and preprocess mushroom dataset
@@ -66,10 +76,11 @@ for loader, name in [
     (yeast_loader, 'yeast'),
     (white_loader, 'white'),
     (mushroom_loader, 'mushroom'),
-    (boston_loader, 'boston')
+    (boston_loader, 'boston'),
+    (acs_loader, 'acs')
 ]:
-    data = loader('original_data')
     np.random.seed(random_seed)
+    data = loader('original_data')
     train_data = corrupt_data_mcar(data)
 
     makedirs('train_test_split', exist_ok=True)
