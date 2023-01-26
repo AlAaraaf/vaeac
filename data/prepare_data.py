@@ -24,6 +24,11 @@ def white_loader(path):
     data = pd.read_csv(join(path, 'winequality-white.csv'), sep=';')
     return np.array(data)
 
+def boston_loader(path):
+    # read boston housing dataset
+    data = pd.read_csv(join(path, 'boston.csv'))
+    return np.array(data)
+
 
 def mushroom_loader(path):
     # read and preprocess mushroom dataset
@@ -61,6 +66,7 @@ for loader, name in [
     (yeast_loader, 'yeast'),
     (white_loader, 'white'),
     (mushroom_loader, 'mushroom')
+    (boston_loader, 'boston')
 ]:
     data = loader('original_data')
     np.random.seed(random_seed)
