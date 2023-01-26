@@ -257,7 +257,7 @@ for batch in iterator:
     for i in range(args.num_imputations):
         sample_params = samples_params[:, i]
         sample = networks['sampler'](sample_params)
-        sample[(1 - mask).byte()] = 0
+        sample[mask.byte()] = 0
         sample += batch_zeroed_nans
         results[i].append(torch.tensor(sample, device='cpu'))
 
