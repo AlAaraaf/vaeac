@@ -26,7 +26,7 @@ def white_loader(path):
 
 def boston_loader(path):
     # read boston housing dataset
-    data = pd.read_csv(join(path, 'boston.csv'))
+    data = pd.read_csv(join(path, 'boston.csv'), index_col=0)
     return np.array(data)
 
 
@@ -65,7 +65,7 @@ def save_data(filename, data):
 for loader, name in [
     (yeast_loader, 'yeast'),
     (white_loader, 'white'),
-    (mushroom_loader, 'mushroom')
+    (mushroom_loader, 'mushroom'),
     (boston_loader, 'boston')
 ]:
     data = loader('original_data')
