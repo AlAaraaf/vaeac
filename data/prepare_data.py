@@ -26,7 +26,7 @@ def white_loader(path):
 
 def boston_loader(path):
     # read boston housing dataset
-    data = pd.read_csv(join(path, 'boston.csv'), index_col=0)
+    data = pd.read_csv(join(path, 'boston.csv'))
     return np.array(data)
 
 def acs_loader(path):
