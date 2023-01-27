@@ -39,6 +39,11 @@ def acs_loader(path):
     data = raw_data[sample_index,:]
     return np.array(data)
 
+def credit_loader(path):
+    # read credit dataset
+    data = pd.read_csv(join(path, 'credit.csv'))
+    return np.array(data)
+
 
 def mushroom_loader(path):
     # read and preprocess mushroom dataset
@@ -77,7 +82,8 @@ for loader, name in [
     (white_loader, 'white'),
     (mushroom_loader, 'mushroom'),
     (boston_loader, 'boston'),
-    (acs_loader, 'acs')
+    (acs_loader, 'acs'),
+    (credit_loader,'credit')
 ]:
     np.random.seed(random_seed)
     data = loader('original_data')
