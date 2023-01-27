@@ -93,7 +93,7 @@ def get_imputation_networks(one_hot_max_sizes):
     generative_network = nn.Sequential(*generative_layers)
 
     return {
-        'batch_size': 64,
+        'batch_size': 512,
 
         'reconstruction_log_prob': GaussianCategoricalLoss(one_hot_max_sizes),
 
