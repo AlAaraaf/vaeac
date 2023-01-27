@@ -1,3 +1,4 @@
+import sys
 from os import makedirs
 from os.path import join
 
@@ -6,7 +7,7 @@ import pandas as pd
 
 
 mcar_prob = 0.5
-random_seed = 239
+random_seed = int(sys.argv[1])
 
 
 def yeast_loader(path):
