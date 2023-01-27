@@ -78,20 +78,23 @@ def save_data(filename, data):
     np.savetxt(filename, data, delimiter='\t')
 
 
-for loader, name in [
-    (yeast_loader, 'yeast'),
-    (white_loader, 'white'),
-    (mushroom_loader, 'mushroom'),
-    (boston_loader, 'boston'),
-    (acs_loader, 'acs'),
-    (credit_loader,'credit')
-]:
-    np.random.seed(random_seed)
-    data = loader('original_data')
-    train_data = corrupt_data_mcar(data)
+loader_dict = {
+    'yeast':yeast_loader,
+    'white':white_loader,
+    'mushroom':mushroom_loader,
+    'boston':boston_loader,
+    'acs':acs_loader,
+    'credit':credit_loader
+}
 
-    makedirs('train_test_split', exist_ok=True)
-    save_data(join('train_test_split', '{}_train.tsv'.format(name)),
-              train_data)
-    save_data(join('train_test_split', '{}_groundtruth.tsv'.format(name)),
-              data)
+name = sys.argv[2]
+loader = loader_dict[name]
+np.random.seed(random_seed)
+data = loader('original_data')
+train_data = corrupt_data_mcar(data)
+
+makedirs('train_test_split', exist_ok=True)
+save_data(join('train_test_split', '{}_train.tsv'.format(name)),
+            train_data)
+save_data(join('train_test_split', '{}_groundtruth.tsv'.format(name)),
+            data)
