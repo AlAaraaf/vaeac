@@ -1,6 +1,7 @@
 import os
 import argparse
 import numpy as np
+import pathlib
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -24,6 +25,11 @@ def imputed_dataset_convert(dataset, indx, mr, size):
     result = np.loadtxt(result_path, delimiter='\t')
     result = result.reshape(input.shape[0], -1, input.shape[1])
     k = result.shape[1]
+
+    
+    pathlib.Path('../samples/{}/complete_{}_{}'.format(dataset,mr, size)).mkdir(parents=True, exist_ok=True)
+    pathlib.Path('../samples/{}/MCAR_{}_{}'.format(dataset,mr, size)).mkdir(parents=True, exist_ok=True)
+    pathlib.Path('../results/{}/MCAR_{}_{}'.format(dataset,mr, size)).mkdir(parents=True, exist_ok=True)
 
     current_sample_savepath = os.path.join('../samples/{}/complete_{}_{}/sample_{}.csv'.format(dataset,mr, size,indx))
     current_input_savepath = os.path.join('../samples/{}/MCAR_{}_{}/sample_{}.csv'.format(dataset,mr, size, indx))
