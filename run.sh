@@ -2,10 +2,10 @@
 cd data
 for i in `seq 0 9`
 do
-    python prepare_data.py $i
+    python prepare_data.py $i boston 0.3 500
     python ../impute.py --input_file train_test_split/boston_train.tsv --output_file imputations/boston_imputed.tsv --one_hot_max_sizes 1 9 1 1 1 1 1 1 1 1 1 1 1 1 --num_imputations 10 --epochs 100 --validation_ratio 0.15
     python evaluate_results.py boston 1 9 1 1 1 1 1 1 1 1 1 1 1 1
-    python ../dataset_convert.py -dataset boston -id $i
+    python ../dataset_convert.py -dataset boston -id $i -mr 0.3 -size 500
 done
 #python ../impute.py --input_file train_test_split/yeast_train.tsv --output_file imputations/yeast_imputed.tsv --one_hot_max_sizes 1 1 1 1 1 1 1 1 10 --num_imputations 10 --epochs 300 --validation_ratio 0.15
 #python evaluate_results.py yeast 1 1 1 1 1 1 1 1 10
