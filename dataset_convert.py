@@ -29,7 +29,7 @@ def imputed_dataset_convert(dataset, indx, mr, size):
     
     pathlib.Path('../samples/{}/complete_{}_{}'.format(dataset,mr, size)).mkdir(parents=True, exist_ok=True)
     pathlib.Path('../samples/{}/MCAR_{}_{}'.format(dataset,mr, size)).mkdir(parents=True, exist_ok=True)
-    pathlib.Path('../results/{}/MCAR_{}_{}'.format(dataset,mr, size)).mkdir(parents=True, exist_ok=True)
+    pathlib.Path('../../MissingData_DL/results/{}/MCAR_{}_{}/vaeac'.format(dataset,mr, size)).mkdir(parents=True, exist_ok=True)
 
     current_sample_savepath = os.path.join('../samples/{}/complete_{}_{}/sample_{}.csv'.format(dataset,mr, size,indx))
     current_input_savepath = os.path.join('../samples/{}/MCAR_{}_{}/sample_{}.csv'.format(dataset,mr, size, indx))
@@ -37,7 +37,7 @@ def imputed_dataset_convert(dataset, indx, mr, size):
     np.savetxt(current_input_savepath, input, delimiter=',')
     for id in range(k):
         current_imputed_dataset = result[:,id,:]
-        current_imputed_savepath = os.path.join('../results/{}/MCAR_{}_{}/imputed_{}_{}.csv'.format(dataset, mr, size, indx, id))
+        current_imputed_savepath = os.path.join('../../MissingData_DL/results/{}/MCAR_{}_{}/vaeac/imputed_{}_{}.csv'.format(dataset, mr, size, indx, id))
         np.savetxt(current_imputed_savepath, current_imputed_dataset, delimiter=',')
 
 if __name__ == '__main__':
