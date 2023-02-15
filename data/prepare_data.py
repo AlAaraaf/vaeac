@@ -42,6 +42,12 @@ def credit_loader(path):
     data = pd.read_csv(join(path, 'credit.csv'))
     return np.array(data)
 
+def sim1t_loader(path):
+    # read credit dataset
+    raw_data = pd.read_csv(join(path, 'sim_1_tiny.csv'), header=None)
+    data = raw_data.values.astype(np.float32)
+    return np.array(data)
+
 
 def mushroom_loader(path):
     # read and preprocess mushroom dataset
@@ -63,11 +69,16 @@ def mushroom_loader(path):
     return data
 
 
-def corrupt_data_mcar(data):
-    # return a copy of data with missing values with density mcar_prob
-    mask = np.random.choice(2, size=data.shape, p=[mcar_prob, 1 - mcar_prob])
+def corrupt_data_mcar(data, seed = 42, is_sim = False):
+    np.random.seed(seed)
     nw_data = data.copy()
-    nw_data[(1 - mask).astype('bool')] = np.nan
+    if is_sim:
+        mask = np.random.choice(2, size=data.shape[0], p = [mcar_prob, 1 - mcar_prob])
+        nw_data[(1 - mask).astype('bool'),-1] = np.nan
+    else:
+    # return a copy of data with missing values with density mcar_prob
+        mask = np.random.choice(2, size=data.shape, p=[mcar_prob, 1 - mcar_prob])
+        nw_data[(1 - mask).astype('bool')] = np.nan
     return nw_data
 
 
@@ -81,7 +92,8 @@ loader_dict = {
     'mushroom':mushroom_loader,
     'boston':boston_loader,
     'acs':acs_loader,
-    'credit':credit_loader
+    'credit':credit_loader,
+    'sim_1_tiny':sim1t_loader
 }
 
 name = sys.argv[2]
@@ -93,7 +105,10 @@ total_index = np.random.permutation(raw_data.shape[0])
 sample_index = total_index[:sample_size]
 data = raw_data[sample_index,:]
 
-train_data = corrupt_data_mcar(data)
+if name == 'sim_1_tiny':
+    train_data = corrupt_data_mcar(data, 42, True)
+else:
+    train_data = corrupt_data_mcar(data)
 
 makedirs('train_test_split', exist_ok=True)
 save_data(join('train_test_split', '{}_train.tsv'.format(name)),
