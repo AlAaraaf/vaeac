@@ -102,9 +102,9 @@ def get_imputation_networks(one_hot_max_sizes):
 
         'vlb_scale_factor': 1 / len(one_hot_max_sizes),
 
-        'optimizer': lambda parameters: Adam(parameters, lr=3e-4),
+        'optimizer': lambda parameters: Adam(parameters, lr=2e-4),
 
-        'mask_generator': MCARGenerator(0.2),
+        'mask_generator': MCARGenerator(0.3, True),
 
         'proposal_network': proposal_network,
 
