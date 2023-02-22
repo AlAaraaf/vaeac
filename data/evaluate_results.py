@@ -37,9 +37,9 @@ dataset = argv[1]
 one_hot_max_sizes = map(int, argv[2:])
 
 # read data
-groundtruth = load_data('train_test_split/{}_groundtruth.tsv'.format(dataset))
-input_data = load_data('train_test_split/{}_train.tsv'.format(dataset))
-output_data = load_data('imputations/{}_imputed.tsv'.format(dataset))
+groundtruth = load_data('data/train_test_split/{}_groundtruth.tsv'.format(dataset))
+input_data = load_data('data/train_test_split/{}_train.tsv'.format(dataset))
+output_data = load_data('data/imputations/{}_imputed.tsv'.format(dataset))
 
 # reshape imputation results
 results = output_data.reshape(input_data.shape[0], -1, input_data.shape[1])
@@ -51,6 +51,8 @@ mask = np.isnan(input_data)
 nrmses = []
 pfcs = []
 for col_id, size in enumerate(one_hot_max_sizes):
+    if sum(mask[:,col_id]) == 0:
+        continue
     args = groundtruth[:, col_id], mask[:, col_id], results[:, :, col_id]
     if size <= 1:
         nrmse = compute_nrmse(*args)
