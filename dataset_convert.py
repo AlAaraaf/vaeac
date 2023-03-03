@@ -26,18 +26,18 @@ def imputed_dataset_convert(dataset, indx, mr, size):
     k = result.shape[1]
 
     
-    pathlib.Path('../../MissingData_DL/results/{}/MCAR_{}_{}/vaeac'.format(dataset,mr, size)).mkdir(parents=True, exist_ok=True)
+    pathlib.Path('../../training_data/results/{}/MCAR_{}_{}/vaeac'.format(dataset,mr, size)).mkdir(parents=True, exist_ok=True)
     for id in range(k):
         current_imputed_dataset = result[:,id,:]
-        current_imputed_savepath = os.path.join('../../MissingData_DL/results/{}/MCAR_{}_{}/vaeac/imputed_{}_{}.csv'.format(dataset, mr, size, indx, id))
+        current_imputed_savepath = os.path.join('../../training_data/results/{}/MCAR_{}_{}/vaeac/imputed_{}_{}.csv'.format(dataset, mr, size, indx, id))
         np.savetxt(current_imputed_savepath, current_imputed_dataset, delimiter=',')
 
 def missing_dataset_convert(dataset, indx, mr, size):
     """
     Convert .csv data into .tsv data for training
     """
-    complete_path = os.path.join('../../MissingData_DL/samples/{}/complete_{}_{}/sample_{}.csv'.format(dataset,mr,size,indx))
-    input_path = os.path.join('../../MissingData_DL/samples/{}/MCAR_{}_{}/sample_{}.csv'.format(dataset,mr,size,indx)) 
+    complete_path = os.path.join('../../training_data/samples/{}/complete_{}_{}/sample_{}.csv'.format(dataset,mr,size,indx))
+    input_path = os.path.join('../../training_data/samples/{}/MCAR_{}_{}/sample_{}.csv'.format(dataset,mr,size,indx)) 
     complete_data = np.loadtxt(complete_path, delimiter=',')
     input_data = np.loadtxt(input_path, delimiter=',')
 
