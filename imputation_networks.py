@@ -93,7 +93,7 @@ def get_imputation_networks(one_hot_max_sizes):
     generative_network = nn.Sequential(*generative_layers)
 
     return {
-        'batch_size': 512,
+        'batch_size': 128,
 
         'reconstruction_log_prob': GaussianCategoricalLoss(one_hot_max_sizes),
 
@@ -111,4 +111,6 @@ def get_imputation_networks(one_hot_max_sizes):
         'prior_network': prior_network,
 
         'generative_network': generative_network,
+
+        'log_name': 'vaeac_sim_1/tuning/'
     }

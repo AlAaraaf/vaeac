@@ -9,6 +9,8 @@ import numpy as np
 import torch
 from torch.utils.data import DataLoader
 from tqdm import tqdm
+from torch.utils.tensorboard import SummaryWriter
+from datetime import datetime
 
 from datasets import compute_normalization
 from imputation_networks import get_imputation_networks
@@ -145,6 +147,11 @@ train_vlb = []
 # best model state according to the validation IWAE
 best_state = None
 
+# initialize tensorboard writer
+TIMESTAMP = "{0:%Y-%m-%dT%H-%M-%S/}".format(datetime.now())
+writer_dir = networks['log_name']
+writer = SummaryWriter('F:/repos/runs/' + writer_dir + TIMESTAMP)
+
 # main train loop
 for epoch in range(args.epochs):
 
@@ -182,6 +189,7 @@ for epoch in range(args.epochs):
                     'validation_iwae': validation_iwae,
                     'train_vlb': train_vlb,
                 })
+                print("best model saved.")
 
             if verbose:
                 print(file=stderr)
@@ -205,11 +213,15 @@ for epoch in range(args.epochs):
         avg_vlb += (float(vlb) - avg_vlb) / (i + 1)
         if verbose:
             iterator.set_description('Train VLB: %g' % avg_vlb)
+        
+    writer.add_scalar('VLB', avg_vlb, epoch)
+    writer.add_scalar('IWAE', val_iwae, epoch)
 
 # if use doesn't set use_last_checkpoint flag,
 # use the best model according to the validation IWAE
 if not args.use_last_checkpoint:
     model.load_state_dict(best_state['model_state_dict'])
+    print(best_state['epoch'])
 
 # build dataloader for the whole input data
 dataloader = DataLoader(data, batch_size=batch_size,
