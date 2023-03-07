@@ -150,7 +150,7 @@ best_state = None
 # initialize tensorboard writer
 TIMESTAMP = "{0:%Y-%m-%dT%H-%M-%S/}".format(datetime.now())
 writer_dir = networks['log_name']
-writer = SummaryWriter('F:/repos/runs/' + writer_dir + TIMESTAMP)
+writer = SummaryWriter('../../runs/' + writer_dir + TIMESTAMP)
 
 # main train loop
 for epoch in range(args.epochs):
