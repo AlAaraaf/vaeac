@@ -83,6 +83,13 @@ parser.add_argument('--use_last_checkpoint', action='store_true',
                          'imputations. This flag forces the last model ' +
                          'to be used.')
 
+parser.add_argument('--hidden_width', type = int, default = 256, required = False)
+parser.add_argument('--batch_size', type = int, default = 128, required = False)
+parser.add_argument('--depth', type = int, default = 10, required = False)
+parser.add_argument('--lr', type = float, required = True)
+parser.add_argument('--l2reg', type = float, required = True)
+parser.add_argument('--log_name', type = str, required = True)
+
 args = parser.parse_args()
 
 one_hot_max_sizes = args.one_hot_max_sizes
@@ -103,7 +110,16 @@ verbose = True
 num_workers = 0
 
 # design all necessary networks and learning parameters for the dataset
-networks = get_imputation_networks(one_hot_max_sizes)
+network_params = dict()
+network_params['one_hot_max_sizes'] = one_hot_max_sizes
+network_params['hidden_width'] = args.hidden_width
+network_params['batch_size'] = args.batch_size
+network_params['depth'] = args.depth
+network_params['lr'] = args.lr
+network_params['l2reg'] = args.l2reg
+network_params['log_name'] = args.log_name
+
+networks = get_imputation_networks(network_params)
 
 # build VAEAC on top of returned network, optimizer on top of VAEAC,
 # extract optimization parameters and mask generator

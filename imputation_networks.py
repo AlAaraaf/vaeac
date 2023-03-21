@@ -7,7 +7,7 @@ from prob_utils import CategoricalToOneHotLayer, GaussianCategoricalLoss, \
                        GaussianCategoricalSampler, SetGaussianSigmasToOne
 
 
-def get_imputation_networks(one_hot_max_sizes):
+def get_imputation_networks(network_params):
     """
     This function builds neural networks for imputation given
     the list of one-hot max sizes of the dataset features.
@@ -18,9 +18,11 @@ def get_imputation_networks(one_hot_max_sizes):
     optimization.
     """
 
-    width = 256
-    depth = 10
+    width = network_params['hidden_width']
+    depth = network_params['depth']
     latent_dim = 64
+
+    one_hot_max_sizes = network_params['one_hot_max_sizes']
 
     # Proposal network
     proposal_layers = [
@@ -102,7 +104,9 @@ def get_imputation_networks(one_hot_max_sizes):
 
         'vlb_scale_factor': 1 / len(one_hot_max_sizes),
 
-        'optimizer': lambda parameters: Adam(parameters, lr=2e-4),
+        'optimizer': lambda parameters: Adam(parameters, 
+                                             lr=network_params['lr'], 
+                                             weight_decay=network_params['l2reg']),
 
         'mask_generator': MCARGenerator(0.3, True),
 
@@ -112,5 +116,5 @@ def get_imputation_networks(one_hot_max_sizes):
 
         'generative_network': generative_network,
 
-        'log_name': 'vaeac_sim_1/tuning/'
+        'log_name': network_params['log_name']
     }
