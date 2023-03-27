@@ -32,9 +32,8 @@ do
         for l2_i in `seq 0 4`
         do
             cd data
-            # python ../dataset_convert.py -dataset house -id $sample_id -mr $mr -size $sample_size -func load
             
-            python ../dataset_convert.py -dataset insome -id $sample_id -mr $mr -size $sample_size -func load
+            python ../dataset_convert.py -dataset $dataset -id $sample_id -mr $mr -size $sample_size -func load
 
             # python ../impute.py --input_file train_test_split/house_train.tsv --output_file imputations/house_imputed.tsv \
             # --one_hot_max_sizes 3 4 3 3 2 4 4 4 2 2 7 2 2 2 2 3 2 2 3 4 4 9 4 2 2 2 3 3 4 4 3 2 8 2 2 2 2 2 1 1 1 1 1 1 1 1 \
@@ -47,7 +46,7 @@ do
             # --log_name vaeac_house_${lr_i}_${l2_i}/tuning/
             # #python evaluate_results.py sim_1 3 2 3 4
 
-            python ../impute.py --input_file train_test_split/income_train.tsv --output_file imputations/house_imputed.tsv \
+            python ../impute.py --input_file train_test_split/${dataset}_train.tsv --output_file imputations/${dataset}_imputed.tsv \
             --one_hot_max_sizes 4 2 2 2 3 3 4 4 3 1 2 2 4 2 3 3 1 8 1 1 2 \
             --num_imputations 10 \
             --epochs 50 \
