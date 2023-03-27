@@ -62,7 +62,7 @@ do
 
             # python ../dataset_convert.py -dataset house -id $sample_id -mr $mr -size $sample_size -func convert
 
-            python --/dataset_convert.py -dataset income -id $sample_id -mr $mr -size $sample_size -fun convert
+            python ../dataset_convert.py -dataset income -id $sample_id -mr $mr -size $sample_size -fun convert
             #python ../impute.py --input_file train_test_split/boston_train.tsv --output_file imputations/boston_imputed.tsv --one_hot_max_sizes 1 9 1 1 1 1 1 1 1 1 1 1 1 1 --num_imputations 10 --epochs 100 --validation_ratio 0.15
             #python evaluate_results.py boston 1 9 1 1 1 1 1 1 1 1 1 1 1 1
 
