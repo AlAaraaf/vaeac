@@ -5,7 +5,7 @@
 #SBATCH --nodes=1  # number of nodes
 #SBATCH --partition=gpu  # partition(s)
 #SBATCH --gres=gpu:1
-#SBATCH --mem=5G  # max memory
+#SBATCH --mem=2G  # max memory
 #SBATCH -J "mdi-v-t"  # job name
 #SBATCH --mail-user=sjx@iastate.edu  # email address
 #SBATCH --mail-type=BEGIN
@@ -20,10 +20,10 @@ lr_list=(2e-4 1e-4 1e-3 2e-3 5e-3 1e-2)
 l2reg=(2e-5 2e-4 1e-4 2e-3 1e-3)
 depth_list=(8 10 12 15 24)
 model_name="vaeac"
-dataset="income"
+dataset="nhanes"
 sample_id=$1
 mr=0.3
-sample_size=10000
+sample_size=5000
 
 for d_i in `seq 0 4`
 do
@@ -47,14 +47,14 @@ do
             # #python evaluate_results.py sim_1 3 2 3 4
 
             python ../impute.py --input_file train_test_split/${dataset}_train.tsv --output_file imputations/${dataset}_imputed.tsv \
-            --one_hot_max_sizes 4 2 2 2 3 3 4 4 3 1 2 2 4 2 3 3 1 8 1 1 2 \
+            --one_hot_max_sizes 2 2 2 2 4 4 2 4 4 3 1 1 1 1 1 1 1 1 1 1 \
             --num_imputations 10 \
-            --epochs 50 \
+            --epochs 100 \
             --validation_ratio 0.15 \
             --lr ${lr_list[$lr_i]} \
             --l2reg ${l2reg[$l2_i]} \
             --depth ${depth_list[$d_i]} \
-            --log_name vaeac_income_${lr_i}_${l2_i}/tuning/
+            --log_name vaeac_nhanes_${lr_i}_${l2_i}/tuning/
             #python evaluate_results.py sim_1 3 2 3 4 
 
             #python ../impute.py --input_file train_test_split/acs_train.tsv --output_file imputations/acs_imputed.tsv --one_hot_max_sizes 3 4 3 3 2 4 4 4 2 2 7 2 2 2 2 3 2 2 3 4 4 9 4 2 2 2 3 3 4 4 3 2 8 2 2 2 2 2 1 1 1 1 1 1 1 1 --num_imputations 10 --epochs 7 --validation_ratio 0.15
@@ -62,7 +62,7 @@ do
 
             # python ../dataset_convert.py -dataset house -id $sample_id -mr $mr -size $sample_size -func convert
 
-            python ../dataset_convert.py -dataset income -id $sample_id -mr $mr -size $sample_size -fun convert
+            python ../dataset_convert.py -dataset income -id $sample_id -mr $mr -size $sample_size -func convert
             #python ../impute.py --input_file train_test_split/boston_train.tsv --output_file imputations/boston_imputed.tsv --one_hot_max_sizes 1 9 1 1 1 1 1 1 1 1 1 1 1 1 --num_imputations 10 --epochs 100 --validation_ratio 0.15
             #python evaluate_results.py boston 1 9 1 1 1 1 1 1 1 1 1 1 1 1
 

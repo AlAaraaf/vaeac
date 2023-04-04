@@ -95,7 +95,7 @@ def get_imputation_networks(network_params):
     generative_network = nn.Sequential(*generative_layers)
 
     return {
-        'batch_size': 128,
+        'batch_size': 256,
 
         'reconstruction_log_prob': GaussianCategoricalLoss(one_hot_max_sizes),
 
@@ -108,7 +108,7 @@ def get_imputation_networks(network_params):
                                              lr=network_params['lr'], 
                                              weight_decay=network_params['l2reg']),
 
-        'mask_generator': MCARGenerator(0.3, True),
+        'mask_generator': MCARGenerator(0.3),
 
         'proposal_network': proposal_network,
 
