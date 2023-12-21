@@ -255,6 +255,9 @@ iterator = dataloader
 if verbose:
     iterator = tqdm(iterator)
 
+# register device for gpu
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
 # impute missing values for all input data
 for batch in iterator:
 
