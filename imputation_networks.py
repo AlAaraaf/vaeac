@@ -108,7 +108,7 @@ def get_imputation_networks(network_params):
                                              lr=network_params['lr'], 
                                              weight_decay=network_params['l2reg']),
 
-        'mask_generator': MCARGenerator(0.3),
+        'mask_generator': MCARGenerator(0.3, network_params['miss_loc']),
 
         'proposal_network': proposal_network,
 

@@ -15,18 +15,19 @@ class MCARGenerator:
 
     If some value in batch is missed, it automatically becomes unobserved.
     """
-    def __init__(self, p, is_sim = False):
+    def __init__(self, p, miss_loc):
         self.p = p
-        self.is_sim = is_sim
+        self.miss_loc = miss_loc
 
     def __call__(self, batch):
         nan_mask = torch.isnan(batch).float()  # missed values
-        bernoulli_mask_numpy = np.random.choice(2, size=batch.shape,
-                                                p=[1 - self.p, self.p])
-        if self.is_sim:
+        
+        if self.miss_loc != -1:
             bernoulli_mask_numpy = np.zeros(shape = batch.shape)
-            bernoulli_mask_numpy[:,-1] = np.random.choice(2, size=batch.shape[0],
-                                                        p=[1 - self.p, self.p])
+            bernoulli_mask_numpy[:,self.miss_loc] = np.random.choice(2, size=batch.shape[0], p=[1 - self.p, self.p])
+        else:
+            bernoulli_mask_numpy = np.random.choice(2, size=batch.shape, p=[1 - self.p, self.p])
+        
         bernoulli_mask = torch.from_numpy(bernoulli_mask_numpy).float()
         mask = torch.max(bernoulli_mask, nan_mask)  # logical or
         return mask

@@ -89,6 +89,7 @@ parser.add_argument('--depth', type = int, default = 10, required = False)
 parser.add_argument('--lr', type = float, required = True)
 parser.add_argument('--l2reg', type = float, required = True)
 parser.add_argument('--log_name', type = str, required = True)
+parser.add_argument('--miss_loc', type = int, required = True) # the column contains NA (-1 for MCAR)
 
 args = parser.parse_args()
 
@@ -118,6 +119,7 @@ network_params['depth'] = args.depth
 network_params['lr'] = args.lr
 network_params['l2reg'] = args.l2reg
 network_params['log_name'] = args.log_name
+network_params['miss_loc'] = args.miss_loc
 
 networks = get_imputation_networks(network_params)
 
