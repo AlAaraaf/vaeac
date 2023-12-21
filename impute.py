@@ -104,6 +104,8 @@ data = (raw_data - norm_mean[None]) / norm_std[None]
 
 # Default parameters which are not supposed to be changed from user interface
 use_cuda = torch.cuda.is_available()
+if use_cuda:
+    print("cuda is available.")
 verbose = True
 # Non-zero number of workers cause nasty warnings because of some bug in
 # multiprocess library. It might be fixed now, but anyway there is no need
@@ -254,9 +256,6 @@ for i in range(args.num_imputations):
 iterator = dataloader
 if verbose:
     iterator = tqdm(iterator)
-
-# register device for gpu
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 # impute missing values for all input data
 for batch in iterator:
